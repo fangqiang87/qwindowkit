@@ -31,6 +31,7 @@ protected:
     bool event(QEvent *event) override;
 
     void closeEvent(QCloseEvent *event) override;
+    void resizeEvent(QResizeEvent *event) override;
 
 private:
     void installWindowAgent();

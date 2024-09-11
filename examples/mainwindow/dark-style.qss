@@ -1,12 +1,12 @@
 /* Window bar */
 
-QWK--WindowBar[bar-active=true] {
+/* QWK--WindowBar[bar-active=true] {
     background-color: #3C3C3C;
 }
 
 QWK--WindowBar[bar-active=false] {
     background-color: #505050;
-}
+} */
 
 
 /* Title label */
