@@ -923,6 +923,24 @@ namespace QWK {
             return true;
         }
 
+        if (message == WM_PARENTNOTIFY) {
+            qDebug() << "WM_PARENTNOTIFY!";
+            const auto type = LOWORD(wParam);
+            if (type == WM_CREATE) {
+                const auto childHwnd = (HWND)lParam;
+                RECT r{};
+                GetWindowRect(childHwnd, &r);
+                qDebug() << "Child position ---->" << r.left << r.top;
+                SetWindowPos(childHwnd, nullptr, r.left, r.top + 30, 0, 0, SWP_NOACTIVATE | SWP_NOSIZE | SWP_NOZORDER | SWP_NOOWNERZORDER);
+                //QCoreApplication::postEvent(m_windowHandle, new QResizeEvent(QSize(500, 500), QSize(600, 600)));
+                QTimer::singleShot(0, m_windowHandle, [this](){
+                    QSize s = m_windowHandle->size();
+                    m_windowHandle->resize(s.width() + 1, s.height() + 1);
+                    //m_windowHandle->resize(s);
+                });
+            }
+        }
+
         // Forward to native event filter subscribers
         if (!m_nativeEventFilters.isEmpty()) {
             MSG msg = createMessageBlock(hWnd, message, wParam, lParam);

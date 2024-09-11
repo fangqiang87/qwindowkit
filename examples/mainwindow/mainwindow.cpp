@@ -32,6 +32,7 @@
 class ClockWidget : public QLabel {
 public:
     explicit ClockWidget(QWidget *parent = nullptr) : QLabel(parent) {
+        setAttribute(Qt::WA_DontCreateNativeAncestors);
         startTimer(100);
         setAlignment(Qt::AlignCenter);
     }
@@ -46,7 +47,6 @@ protected:
     void mouseReleaseEvent(QMouseEvent *ev) override {
         QLabel::mouseReleaseEvent(ev);
 
-        setAttribute(Qt::WA_DontCreateNativeAncestors);
         qDebug() << winId();
     }
 };
@@ -352,6 +352,7 @@ static QHash<int, const wchar_t *> xmsgHash = //
 class MyPushButton : public QPushButton {
 public:
     MyPushButton(const QString &text, QWidget *parent = nullptr) : QPushButton(text, parent) {
+        setAttribute(Qt::WA_DontCreateNativeAncestors);
     }
 
 protected:
@@ -414,8 +415,12 @@ protected:
     void mouseReleaseEvent(QMouseEvent *event) override {
         QPushButton::mouseReleaseEvent(event);
         if (!native) {
-            setAttribute(Qt::WA_DontCreateNativeAncestors);
+            qDebug() << "Orignal ----->" << mapToGlobal(QPoint(0, 0)) << size();
+            //setAttribute(Qt::WA_DontCreateNativeAncestors);
             qDebug() << winId();
+            //createWinId();
+            qDebug() << "Now ----->" << mapToGlobal(QPoint(0, 0)) << size();
+            QTimer::singleShot(1000, this, [this](){ qDebug() << "Now ----->" << mapToGlobal(QPoint(0, 0)) << size(); });
             native = true;
             return;
         }
@@ -436,6 +441,8 @@ protected:
 };
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
+    setAttribute(Qt::WA_DontCreateNativeAncestors);
+
     installWindowAgent();
 
 #if 1
